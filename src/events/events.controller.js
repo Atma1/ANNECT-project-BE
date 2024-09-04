@@ -5,7 +5,6 @@ const {
   insertEvent,
   getEventDetail,
 } = require("./events.service");
-const { channels } = require("../db");
 const router = Router();
 
 router.get("/", async (req, res) => {
@@ -20,8 +19,8 @@ router.get("/", async (req, res) => {
     // Membuat objek filter berdasarkan parameter yang diterima
     const filter = {
       where: {},
-      include: { 
-        channels:true,
+      include: {
+        channels: true,
         tags: tags.length > 0 ? { where: { id: { in: tags } } } : true,
         categories: categories.length > 0 ? { where: { id: { in: categories } } } : true,
         favorites: true,
@@ -61,11 +60,11 @@ router.get("/", async (req, res) => {
     events.forEach((event) => {
       event.is_favorite = false;
       if (event.favorites.length > 0 && user_id != null) {
-          event.favorites.forEach((favorite) => {
-            if (favorite.user_id == user_id) {
-                event.is_favorite = true;
-            }
-          })
+        event.favorites.forEach((favorite) => {
+          if (favorite.user_id == user_id) {
+            event.is_favorite = true;
+          }
+        })
       }
     })
 
